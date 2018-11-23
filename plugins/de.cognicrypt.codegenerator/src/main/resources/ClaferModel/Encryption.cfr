@@ -21,7 +21,6 @@ PKCS5Padding : Padding
 
 //enum AsymmetricPadding
 abstract AsymmetricPadding: Enum -> string
-OAEPWithSHA1 : AsymmetricPadding = "OAEPWithSHA-1AndMGF1Padding"
 OAEPWithSHA256 : AsymmetricPadding = "OAEPWithSHA-256AndMGF1Padding"
 
 //enum Mode
@@ -116,18 +115,16 @@ abstract AsymmetricCipher : Cipher
 	performance -> Performance
 	padding -> AsymmetricPadding
 	
-xor AsymmetricCiphers
-    RSA: AsymmetricCipher
+RSA: AsymmetricCipher
     [name = "RSA" ]
     [description = "RSA Algorithm"]
     [mode = ECB]
     [keySizePub = 2048 || keySizePub = 4096]
-    [keySizePub = 2048 => performance = Slow && algorithmSecurity = Medium && padding = OAEPWithSHA1]
     [keySizePub > 2048 => performance = Slow && algorithmSecurity = Strong && padding = OAEPWithSHA256]	    
     [keySizeSec = keySizePub ]
 	
     
-HybridEncryption : Task
+Encryption : Task
 	[description = "HybridEncryption"]
 	symmetricCipher -> SymmetricBlockCipher
 	asymmetricCipher -> AsymmetricCipher

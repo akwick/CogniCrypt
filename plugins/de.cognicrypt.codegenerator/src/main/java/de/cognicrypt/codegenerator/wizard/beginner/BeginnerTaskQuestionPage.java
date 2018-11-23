@@ -72,11 +72,20 @@ public class BeginnerTaskQuestionPage extends WizardPage {
 	private Text note;
 	private Composite container;
 	private int count = 0;
+	private boolean isActive = true;
 
 	public int getCurrentPageID() {
 		return this.page.getId();
 	}
 
+	public void setPageInactive() {
+		isActive = false;
+	}
+	
+	public boolean isActive() {
+		return isActive;
+	}
+	
 	/**
 	 * construct a page containing an element other than itemselection
 	 *
@@ -176,7 +185,7 @@ public class BeginnerTaskQuestionPage extends WizardPage {
 			if (answer == null || answer.getValue().isEmpty()) {
 				return false;
 			}
-			if (Arrays.asList((new GUIElements[] { GUIElements.button, GUIElements.itemselection, GUIElements.radio, GUIElements.scale })).contains(question.getElement())) {
+			if (Arrays.asList((new GUIElements[] { GUIElements.button, GUIElements.itemselection, GUIElements.radio, GUIElements.scale, GUIElements.checkbox })).contains(question.getElement())) {
 				return this.finish;
 			}
 		}
@@ -304,27 +313,20 @@ public class BeginnerTaskQuestionPage extends WizardPage {
 						groupLabel.setText(labelText);
 						Text pathText = new Text(container, SWT.FILL);
 						pathText.setEnabled(false);
-						
-						
-						
 					}
-					
-					
 				}
-				
-			
-				
 				BeginnerTaskQuestionPage.this.setPageComplete(this.finish = true);
 				break;
 				
 			case checkbox:
-				final Button[] cbs = new Button[answers.size()];
+				final List<Button> cbs = new ArrayList<Button>();
 				final List<Button> exclusiveCbs = new ArrayList<Button>(answers.size());
 				
 				for(int i = 0; i < answers.size(); i++) {
 					final Answer a = answers.get(i);
 					final Button curCheckbox = new Button(container, SWT.CHECK);
 					curCheckbox.setText(a.getValue());
+					
 					curCheckbox.addSelectionListener(new SelectionAdapter() {
 						
 						@Override
@@ -336,6 +338,7 @@ public class BeginnerTaskQuestionPage extends WizardPage {
 								final boolean isSelected = btn.getSelection();
 
 								if(isExclusive) {
+									question.setEnteredAnswer(null);
 									BeginnerTaskQuestionPage.this.selectionMap.clear();
 									for(Button b : cbs) {
 										if(b != curCheckbox) {
@@ -347,13 +350,30 @@ public class BeginnerTaskQuestionPage extends WizardPage {
 								}
 								
 								if(isSelected) {
-									BeginnerTaskQuestionPage.this.selectionMap.put(question, a);
-									question.setEnteredAnswer(a);
+									Answer prevAns = question.getEnteredAnswer();
+									if (prevAns != null && !Boolean.parseBoolean(prevAns.getUIDependency("isExclusive"))) {
+										Answer combinedAnswer = prevAns.combineWith(a);
+										question.setEnteredAnswer(combinedAnswer);
+										BeginnerTaskQuestionPage.this.selectionMap.put(question, combinedAnswer);
+										
+									} else {
+										question.setEnteredAnswer(a);
+										BeginnerTaskQuestionPage.this.selectionMap.put(question, a);
+									}
 								}
+								
+								finish = cbs.stream().anyMatch(e -> e.getSelection());
+								BeginnerTaskQuestionPage.this.setPageComplete(isPageComplete());
+								
+								
 							}
+							
 						}
 					});
-					cbs[i] = curCheckbox;
+					cbs.add(curCheckbox);
+					curCheckbox.setSelection(a.isDefaultAnswer());
+					question.setEnteredAnswer(a);
+					BeginnerTaskQuestionPage.this.selectionMap.put(question, a);
 					
 					final String isExlusiveValue = a.getUIDependency("isExclusive");
 					if(Boolean.parseBoolean(isExlusiveValue)) {
@@ -369,7 +389,7 @@ public class BeginnerTaskQuestionPage extends WizardPage {
 				this.finish = true;
 				BeginnerTaskQuestionPage.this.setPageComplete(this.finish);
 				break;
-			
+
 			case scale:
 				for (int i = 0; i < answers.size(); i++) {
 					if (i == 0) {
