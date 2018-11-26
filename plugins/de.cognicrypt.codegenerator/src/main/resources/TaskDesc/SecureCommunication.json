@@ -1,13 +1,13 @@
 [
 	{
 		"id": "0",
-		"helpID": "SecureCommunication_Page1",
+		"helpID": "TLS_Q1",
 		"content": [
 			{
-				"id": "2",
+				"id": "0",
 				"element": "combo",
 				"note": "",
-				"questionText": "What are you implementing?",
+				"questionText": "Are you implementing the client side or server side?",
 				"answers": [
 					{
 						"value": "Server-side",
@@ -17,7 +17,7 @@
 								"value": "true"
 							}
 						],
-						"nextID": "6"
+						"nextID": "3"
 					},
 					{
 						"value": "Client-side",
@@ -36,37 +36,37 @@
 	},
 	{
 		"id": "1",
-		"helpID": "SecureCommunication_Page2",
+		"helpID": "TLS_Q2_Client",
 		"content": [
 			{
-				"id": "3",
+				"id": "0",
 				"element": "radio",
 				"note": "",
-				"questionText": "Do you know the IP address and Port number of the server?",
+				"questionText": "Do you want to set IP/hostname and port of the server you will communicate with?",
 				"answers": [
+					{
+						"value": "No/Do not care",
+						"codeDependencies": [
+						],
+						"defaultAnswer": true,
+						"nextID": "-1"
+					},
 					{
 						"value": "Yes",
 						"codeDependencies": [
 						],
 						"nextID": "2"
-					},
-					{
-						"value": "No",
-						"codeDependencies": [
-						],
-						"defaultAnswer": true,
-						"nextID": "5"
 					}
 				]
 			}
 		]
 	},
 	{
-		"id": "3",
-		"helpID": "SecureCommunication_Page3",
+		"id": "2",
+		"helpID": "TLS_Q3_Backend",
 		"content": [
 			{
-				"id": "4",
+				"id": "0",
 				"element": "text",
 				"message": "e.g. 127.0.0.1",
       			"textType":"Ip address",
@@ -85,7 +85,7 @@
 				]
 			},
 			{
-				"id": "5",
+				"id": "1",
 				"tooltip": "443 HTTPS\n 22 SSH",
 				"element": "text",
      			"textType":"Port number",
@@ -104,111 +104,15 @@
 				]
 			}
 		],
-		"nextID": "4"
+		"nextID": "-1"
 	},
 	{
-		"id": "4",
-		"helpID": "SecureCommunication_Page4",
-		"content": [
-			{
-				"id": "6",
-				"element": "button",
-				"questionText": "Click \"Test\" button, if you want to test the connection to the host IP else click \"Next\".",
-				"method": [
-					"Test",
-					"de.cognicrypt.codegenerator.wizard.TLSConnection",
-					"testConnection"
-				],
-				"methodParamIds": [
-					"4",
-					"5"
-				],
-				"answers": [
-					{
-						"value": "true",
-						"codeDependencies": [
-						], 
-						"nextID": "5"
-						
-					},
-					{
-						"value": "false",
-						"codeDependencies": [
-						], 
-						"nextID": "5",
-						"defaultAnswer": true
-					}
-				]
-			}
-		],
-		"nextID": "5"
-	},
-	{
-		"id": "5",
-		"helpID": "SecureCommunication_Page5",
-		"content": [
-			{
-				"id": "7",
-				"element": "radio",
-				"note": "",
-				"questionText": "We have compiled a default configuration that is secure.\nDo you want to accept this configuration?",
-				"answers": [
-					{
-						"value": "Yes",
-						"claferDependencies": [
-							{
-								"algorithm": "ciphersuites",
-								"operand": "tlsProtocol;suiteSecurity",
-								"operator": "|",
-								"value": ">= TLS1_2;> Medium"
-							}
-						],
-						"defaultAnswer": true,
-						"nextID": "-1"
-					},
-					{
-						"value": "No",
-						"claferDependencies": [
-						],
-						"nextID": "6"
-					}
-				]
-			}
-		]
-	},
-	{
-		"id": "6",
-		"helpID": "SecureCommunication_Page6",
-		"content": [
-			{
-				"id": "8",
-				"element": "itemselection",
-				"selectionClafer": "CipherSuite",
-				"questionText": "Please select the cipher suites and TLS protocol versions you would like to use.",
-				"answers": [
-					{
-						"value": "",
-						"": [
-							{
-								"refClafer": "",
-								"value": "",
-								"operator": ""
-							}
-						],
-						"defaultAnswer": true,
-						"nextID": "-1"
-					}
-				]
-			}
-		]
-	},
-	{
-		"id": "7",
-		"helpID": "SecureCommunication_Page7",		
+		"id": "3",
+		"helpID": "TLS_Q2_Server",		
 		"content": [
 			{			
-				"id": "9",
-				"tooltip": "Example: 80",
+				"id": "0",
+				"tooltip": "Example: 443",
 				"element": "text",
 				"textType": "Port number",
 				"questionText": "Which port should the server run on?",
@@ -226,6 +130,84 @@
 				]
 			}
 		],
+		"nextID": "4"
+	},
+	{
+		"id": "4",
+		"helpID": "TLS_Q3_Server",		
+		"content": [
+			{			
+				"id": "0",
+				"tooltip": "Example: 443",
+				"element": "text",
+				"textType": "key number",
+				"questionText": "To set up a secure connection, you need a key.",
+				"answers": [
+					{
+						"value": "",
+						"codeDependencies": [
+							{
+								"option": "key",
+								"value": "key"
+							}
+						],
+						"defaultAnswer": true
+					}
+				]
+			}
+		],
 		"nextID": "5"
+	},
+	{
+	    "id": "5",
+	    "helpID": "TLS_Q4_Server",
+	    "content": [
+	        {
+	            "id": "0",
+	            "element": "radio",
+	           	"questionText": "Which clients should the server should at least support?",
+				"answers": [
+					{
+						"value": "Modern Clients",
+						"codeDependencies": [
+						],
+						"defaultAnswer": true,
+						"nextID": "-1"
+					},
+					{
+						"value": "Legacy Clients",
+						"codeDependencies": [
+						],
+						"nextID": "6"
+					}
+				]	
+			}	        
+	    ]
+	},
+	{
+		"id": "6",
+		"helpID": "TLS_Q5_Server",
+		"content": [
+			{
+				"id": "0",
+				"element": "radio",
+				"questionText": "Which clients should the server should at least support?",
+				"answers": [
+				    {
+				         "value": "Firefox 27",
+				         "codeDependencies": [
+				         ],
+				         "defaultAnswer": true
+				     },
+				     {
+				     	"value": "Chrome 30",
+				     	"codeDependencies": [
+				     	],
+				     	"defaultAnswer": true
+				     }
+				]
+			}
+		],
+		"nextID": "-1"
 	}
 ]
