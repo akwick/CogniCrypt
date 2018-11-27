@@ -381,6 +381,37 @@ public class HTTPSConnection {
 	
 }
 </xsl:result-document>
+
+<!-- Template Usage file for HTTPS Client connection -->
+package <xsl:value-of select="//Package"/>; 
+<xsl:apply-templates select="//Import"/>	
+public class Output {
+
+	public void templateUsage(<xsl:choose>
+         <xsl:when test="//task/code/host"></xsl:when>
+         <xsl:otherwise>String host</xsl:otherwise>
+		 </xsl:choose>
+		 <xsl:choose>
+         <xsl:when test="//task/code/port"></xsl:when>
+         <xsl:otherwise>,int port</xsl:otherwise></xsl:choose>) {
+         //You need to set the right host (first parameter) and the port name (second parameter). If you wish to pass a IP address, please use overload with InetAdress as second parameter instead of string.
+		 HTTPSConnection https = new HTTPSConnection(<xsl:choose>
+         <xsl:when test="//task/code/host"></xsl:when>
+         <xsl:otherwise>host</xsl:otherwise>
+		 </xsl:choose>
+		 <xsl:choose>
+         <xsl:when test="//task/code/port"></xsl:when>
+         <xsl:otherwise>, port</xsl:otherwise>
+		 </xsl:choose>);
+		 
+		 Boolean sendingSuccessful = https.sendData("");
+		 String data = htpps.receiveData();
+		
+		 https.closeConnection();		
+	}
+	
+	
+}
 </xsl:otherwise>
 </xsl:choose>
 
