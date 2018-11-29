@@ -18,7 +18,7 @@
 			"xslFile" : "src/main/resources/XSLTemplates/SecurePassword.xsl"	
 		},
 		{
-			"name": "Secure Network Connection",
+			"name": "SecureCommunication",
 			"description": "Establish a Secure Network Connection",
 			"taskDescription": "Establish a secure communication channel (e.g., TLS/SSL connection).",
 			"modelFile" : "src/main/resources/ClaferModel/SecureCommunication.js",

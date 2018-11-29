@@ -85,16 +85,9 @@ public class TLSServer {
         
     private void setCipherSuites() {
 		if (sslServersocket != null) {
+		//Insert cipher suites here
 		sslServersocket.setEnabledCipherSuites(new String[]{
-		"TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384", "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384", "TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256", "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256",
-		"TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384", "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384", "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256", "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256", 
-		"TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256", "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256"
-		<xsl:if test="//task/code/legacy='true']">
-		"TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256", "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA", "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA", "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA ++ TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
-		"TLS_DHE_RSA_WITH_AES_128_CBC_SHA256", "TLS_DHE_RSA_WITH_AES_128_CBC_SHA", "TLS_DHE_RSA_WITH_AES_256_CBC_SHA256", "TLS_DHE_RSA_WITH_AES_CBC_256_SHA", "TLS_ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA" 
-		"TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA", "TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA", "TLS_RSA_WITH_AES_128_GCM_SHA256", "TLS_RSA_WITH_AES_256_GCM_SHA384", "TLS_RSA_WITH_AES_256_CBC_SHA256", "TLS_RSA_WITH_AES_128_CBC_SHA"
-		"TLS_RSA_WITH_3DES_EDE_CBC_SHA"		
-		</xsl:if>
+		<xsl:for-each select="//task/element[@type='SecureCommunication']/Ciphersuites">"<xsl:value-of select="."/>",</xsl:for-each>
 		});
 		}
 	}
@@ -176,7 +169,10 @@ public class Output {
 		
 	}
 }
-</xsl:when><xsl:otherwise>
+</xsl:when>
+<!-- Server code is finished. Remaining code is client: TLS Client or "simply" connect to an HTTPS connection -->
+<!-- TLS client implementation -->
+<xsl:when test="//task/code/https='false'">
 <xsl:result-document href="TLSClient.java">
 package <xsl:value-of select="//task/Package"/>; 
 <xsl:apply-templates select="//Import"/>
@@ -230,7 +226,6 @@ public class TLSClient {
          <xsl:otherwise>port</xsl:otherwise>
 		 </xsl:choose>
          );
-         
 			setCipherSuites();
 			setProtocols();
 			sslsocket.startHandshake();
@@ -247,15 +242,7 @@ public class TLSClient {
 		if (sslsocket != null) {
 			//Insert cipher suites here
 			sslsocket.setEnabledCipherSuites(new String[]{
-			"TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384", "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384", "TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256", "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256",
-		"TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384", "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384", "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256", "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256", 
-		"TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256", "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256"
-		<xsl:if test="//task/code/legacy='true']">
-		"TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256", "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA", "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA", "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA ++ TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
-		"TLS_DHE_RSA_WITH_AES_128_CBC_SHA256", "TLS_DHE_RSA_WITH_AES_128_CBC_SHA", "TLS_DHE_RSA_WITH_AES_256_CBC_SHA256", "TLS_DHE_RSA_WITH_AES_CBC_256_SHA", "TLS_ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA" 
-		"TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA", "TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA", "TLS_RSA_WITH_AES_128_GCM_SHA256", "TLS_RSA_WITH_AES_256_GCM_SHA384", "TLS_RSA_WITH_AES_256_CBC_SHA256", "TLS_RSA_WITH_AES_128_CBC_SHA"
-		"TLS_RSA_WITH_3DES_EDE_CBC_SHA"		
-		</xsl:if>
+			<xsl:for-each select="//task/element[@type='SecureCommunication']/Ciphersuites">"<xsl:value-of select="."/>",</xsl:for-each>
 			});
 		}
 	}
@@ -264,10 +251,7 @@ public class TLSClient {
 		if (sslsocket != null) {
 			//Insert TLSxx here
 			sslsocket.setEnabledProtocols( new String[]{
-			"TLSv1.2"
-			<xsl:if test="//task/code/legacy='true']">
-			"TLSv1.1", "TLSv1.0"
-			</xsl:if>
+			"TLSv1.1", "TLSv1.2" <!-- <xsl:for-each select="//task/element[@type='SecureCommunication']/TlsVersion">"<xsl:value-of select="."/>",</xsl:for-each>-->
 			} );
 		}
 	}
@@ -334,8 +318,102 @@ public class Output {
 		
 		tls.closeConnection();		
 	}
+	
+	
 }
-</xsl:otherwise></xsl:choose>
+</xsl:when>
+<!-- Code template for the remaining option: HTTPS client connection -->
+<xsl:otherwise>
+<xsl:result-document href="HTTPSConnection.java">
+package <xsl:value-of select="//task/Package"/>; 
+<xsl:apply-templates select="//Import"/>
+/** @author CogniCrypt */
+public class HTTPSConnection {	
+  private static HttpsURLConnection con = null;
+  private static SSLSocket socket = null;
+  private static BufferedReader reader = null;
+  private static BufferedWriter writer = null;
+
+  public HTTPSConnection(<xsl:choose><xsl:when test="//task/code/host">
+            	"<xsl:value-of select="//task/code/host"/>
+            </xsl:when><xsl:otherwise>
+            	String host
+         </xsl:otherwise></xsl:choose>) {
+  url = new URL(host)
+  /** ToDo Check against documentation because of default implementation of HostnameVerifier and SSLSocketFactory
+  con = new HttpsURLConnection(host)  
+  socket = con.getSSLSocketFactory()
+  reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+  }
+  
+  	public void closeConnection() {
+		try {
+		if (!sslsocket.isClosed()) {
+			sslsocket.close();
+		}
+		} catch (IOException ex) {
+			System.out.println("Could not close channel.");
+			ex.printStackTrace();
+		}
+	}
+	
+	public String receiveData() {
+		try {
+			return reader.readLine();
+		} catch (IOException ex) {
+			System.out.println("Receiving data failed.");
+			ex.printStackTrace();
+			return null;
+		}
+	}
+
+	public boolean sendData(String content) {
+		try {
+			writer.write(content + "\n");
+			writer.flush();
+			return true;
+		} catch (IOException ex) {
+			System.out.println("Sending data failed.");
+			ex.printStackTrace();
+			return false;
+		}
+	}
+	
+}
+</xsl:result-document>
+
+<!-- Template Usage file for HTTPS Client connection -->
+package <xsl:value-of select="//Package"/>; 
+<xsl:apply-templates select="//Import"/>	
+public class Output {
+
+	public void templateUsage(<xsl:choose>
+         <xsl:when test="//task/code/host"></xsl:when>
+         <xsl:otherwise>String host</xsl:otherwise>
+		 </xsl:choose>
+		 <xsl:choose>
+         <xsl:when test="//task/code/port"></xsl:when>
+         <xsl:otherwise>,int port</xsl:otherwise></xsl:choose>) {
+         //You need to set the right host (first parameter) and the port name (second parameter). If you wish to pass a IP address, please use overload with InetAdress as second parameter instead of string.
+		 HTTPSConnection https = new HTTPSConnection(<xsl:choose>
+         <xsl:when test="//task/code/host"></xsl:when>
+         <xsl:otherwise>host</xsl:otherwise>
+		 </xsl:choose>
+		 <xsl:choose>
+         <xsl:when test="//task/code/port"></xsl:when>
+         <xsl:otherwise>, port</xsl:otherwise>
+		 </xsl:choose>);
+		 
+		 Boolean sendingSuccessful = https.sendData("");
+		 String data = htpps.receiveData();
+		
+		 https.closeConnection();		
+	}
+	
+	
+}
+</xsl:otherwise>
+</xsl:choose>
 
 </xsl:if>
 
