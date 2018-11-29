@@ -965,19 +965,13 @@ public class BeginnerTaskQuestionPage extends WizardPage {
 	}
 
 	public int getPageNextID() {
-		int nextID = -1;
-		if (this.page != null) {
-			nextID = this.page.getNextID();
-		}
-		if (nextID > -2) {
-			return nextID;
-		} else {
-			// in this case there would only be one question on a page, thus only have a single selection.
-			for (final Entry<Question, Answer> entry : this.selectionMap.entrySet()) {
-				return entry.getValue().getNextID();
+		for (final Entry<Question, Answer> entry : this.selectionMap.entrySet()) {
+			int nextID = entry.getValue().getNextID();
+			if (nextID > -2) {
+				return nextID;
 			}
 		}
-		return nextID;
+		return this.page.getNextID();
 	}
 
 	private Composite getPanel(final Composite parent) {

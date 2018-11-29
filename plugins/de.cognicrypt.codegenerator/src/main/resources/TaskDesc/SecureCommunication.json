@@ -5,7 +5,7 @@
 		"content": [
 			{
 				"id": "0",
-				"element": "combo",
+				"element": "radio",
 				"note": "",
 				"questionText": "Are you implementing the client side or server side?",
 				"answers": [
@@ -27,12 +27,38 @@
 								"value": "false"
 							}
 						],
-						"defaultAnswer": true,
-						"nextID": "1"
+						"defaultAnswer": true
+					}
+				]
+			},
+			{
+				"id": "1",
+				"element": "radio",
+				"note": "",
+				"questionText": "Which protocol do you wish to use?",
+				"answers": [
+					{
+						"value": "HTTPS",
+						"codeDependencies": [
+							{
+								"option": "HTTPS",
+								"value": "true"
+							}
+						],
+						"defaultAnswer": true
+					},
+					{
+						"value": "Plain Secure Connection",
+						"codeDependencies": [
+							{
+								"option": "HTTPS",
+								"value": "false"
+							}
+						]
 					}
 				]
 			}
-		]
+		], "nextID":"1"
 	},
 	{
 		"id": "1",
@@ -187,27 +213,189 @@
 	{
 		"id": "6",
 		"helpID": "TLS_Q5_Server",
-		"content": [
-			{
-				"id": "0",
-				"element": "radio",
-				"questionText": "Which clients should the server should at least support?",
-				"answers": [
-				    {
-				         "value": "Firefox 27",
-				         "codeDependencies": [
-				         ],
-				         "defaultAnswer": true
-				     },
-				     {
-				     	"value": "Chrome 30",
-				     	"codeDependencies": [
-				     	],
-				     	"defaultAnswer": true
-				     }
-				]
-			}
-		],
-		"nextID": "-1"
+		"content": [{
+	      "id": "0",
+	      "element":"checkbox",
+	      "note": "It is highly discouraged to enable support for any of the non-selected options. Supporting even older clients in a secure manner is not possible.",      
+	      "questionText": "Which clients should the server support at the very least?",
+	      "answers": [{
+	          "value": "Firefox 27",
+	          "defaultAnswer": true,
+	          "claferDependencies": [{
+	            "algorithm": "security",
+	            "value": "4",
+	            "operator": "="
+	          }],
+	          "nextID": "-1"
+	        },
+	        {
+	          "value": "Chrome 30",
+	          "defaultAnswer": true,
+	          "claferDependencies": [{
+	            "algorithm": "security",
+	            "value": "4",
+	            "operator": "="
+	          }],
+	          "nextID": "-1"
+	        },
+	        {
+	          "value": "Internet Explorer 11",
+	          "defaultAnswer": true,
+	          "claferDependencies": [{
+	            "algorithm": "security",
+	            "value": "4",
+	            "operator": "="
+	          }],
+	          "nextID": "-1"
+	        },
+	        {
+	          "value": "Opera 17",
+	          "defaultAnswer": true,
+	          "claferDependencies": [{
+	            "algorithm": "security",
+	            "value": "4",
+	            "operator": "="
+	          }],
+	          "nextID": "-1"
+	        },
+	        {
+	          "value": "Safari 9",
+	          "defaultAnswer": true,
+	          "claferDependencies": [{
+	            "algorithm": "security",
+	            "value": "4",
+	            "operator": "="
+	          }],
+	          "nextID": "-1"
+	        },
+	        {
+	          "value": "Android 5",
+	          "defaultAnswer": true,
+	          "claferDependencies": [{
+	            "algorithm": "security",
+	            "value": "4",
+	            "operator": "="
+	          }],
+	          "nextID": "-1"
+	        },
+	        {
+	          "value": "Java 8",
+	          "defaultAnswer": true,
+	          "claferDependencies": [{
+	            "algorithm": "security",
+	            "value": "4",
+	            "operator": "="
+	          }],
+	          "nextID": "-1"
+	        },
+	        {
+	          "value": "Firefox 1",
+	        "codeDependencies":[{
+	          "option":"legacy", 
+	          "value" : "true"
+	        }],
+	          "claferDependencies": [{
+	            "algorithm": "security",
+	            "value": "2",
+	            "operator": "="
+	          }],
+	          "nextID": "-1"
+	        },
+	        {
+	          "value": "Chrome 1",
+	          "codeDependencies":[{
+	          "option":"legacy", 
+	          "value" : "true"
+	        }],
+	          "claferDependencies": [{
+	            "algorithm": "security",
+	            "value": "2",
+	          }],
+	          "nextID": "-1"
+	        },
+	        {
+	          "value": "Internet Explorer 7",
+	          "codeDependencies":[{
+	          "option":"legacy", 
+	          "value" : "true"
+	        }],
+	          "claferDependencies": [{
+	            "algorithm": "security",
+	            "value": "2",
+	            "operator": "="
+	          }],
+	          "nextID": "-1"
+	        },
+	        {
+	          "value": "Opera 5",
+	          "codeDependencies":[{
+	          "option":"legacy", 
+	          "value" : "true"
+	        }],
+	          "claferDependencies": [{
+	            "algorithm": "security",
+	            "value": "2",
+	            "operator": "="
+	          }],
+	          "nextID": "-1"
+	        },
+	        {
+	          "value": "Safari 1",
+	          "codeDependencies":[{
+	          "option":"legacy", 
+	          "value" : "true"
+	        }],
+	          "claferDependencies": [{
+	            "algorithm": "security",
+	            "value": "2",
+	            "operator": "="
+	          }],
+	          "nextID": "-1"
+	        },
+	        {
+	          "value": "Android 2.3",
+	          "codeDependencies":[{
+	          "option":"legacy", 
+	          "value" : "true"
+	        }],
+	          "claferDependencies": [{
+	            "algorithm": "security",
+	            "value": "2",
+	            "operator": "="
+	          }],
+	          "nextID": "-1"
+	        },
+	        {
+	          "value": "Java 7",
+	          "codeDependencies":[{
+	          "option":"legacy", 
+	          "value" : "true"
+	        }],
+	          "claferDependencies": [{
+	            "algorithm": "security",
+	            "value": "2",
+	            "operator": "="
+	          }],
+	          "nextID": "-1"
+	        },
+	        {
+	          "value": "Windows XP",
+	          "codeDependencies":[{
+	          "option":"legacy", 
+	          "value" : "true"
+	        }],
+	          "claferDependencies": [{
+	            "algorithm": "security",
+	            "value": "2",
+	            "operator": "="
+	          },{
+	            "algorithm": "tlsProtocol",
+	            "value": "TLSv10,TLSv11, TLSv12",
+	            "operator": "++"
+	          } ],
+	          "nextID": "-1"       	      
+			}], 
+	      "nextID": "-1"
+		}]
 	}
 ]

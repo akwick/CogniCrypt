@@ -12,13 +12,11 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 import de.cognicrypt.codegenerator.Activator;
 import de.cognicrypt.codegenerator.DeveloperProject;
-import de.cognicrypt.codegenerator.featuremodel.clafer.ClaferModel;
 import de.cognicrypt.codegenerator.featuremodel.clafer.InstanceGenerator;
 import de.cognicrypt.codegenerator.generator.CodeGenerator;
 import de.cognicrypt.codegenerator.generator.XSLBasedGenerator;
@@ -34,9 +32,6 @@ import de.cognicrypt.utils.Utils;
 public class AltConfigWizard extends Wizard {
 
 	private TaskSelectionPage taskListPage;
-	private WizardPage preferenceSelectionPage;
-	private LocatorPage locatorPage;
-	private ClaferModel claferModel;
 	private HashMap<Question, Answer> constraints;
 	private BeginnerModeQuestionnaire beginnerQuestions;
 
@@ -96,18 +91,15 @@ public class AltConfigWizard extends Wizard {
 		}
 		final Task selectedTask = this.taskListPage.getSelectedTask();
 		if (currentPage instanceof TaskSelectionPage) {
-			this.claferModel = new ClaferModel(CodeGenUtils.getResourceFromWithin(selectedTask.getModelFile()));
 			this.beginnerQuestions = new BeginnerModeQuestionnaire(selectedTask, selectedTask.getQuestionsJSONFile());
 			// It is possible that now questions are within a BeginnerModeQuestionnaire
 
 			if (this.beginnerQuestions.hasPages()) {
-				this.preferenceSelectionPage = new BeginnerTaskQuestionPage(this.beginnerQuestions.nextPage(), this.beginnerQuestions.getTask(), null);
-				addPage(this.preferenceSelectionPage);
-				return this.preferenceSelectionPage;
+				BeginnerTaskQuestionPage questionPage = new BeginnerTaskQuestionPage(this.beginnerQuestions.nextPage(), this.beginnerQuestions.getTask(), null);
+				addPage(questionPage);
+				return questionPage;
 			} else {
-				this.locatorPage = new LocatorPage("Locator");
-				addPage(this.locatorPage);
-				return this.locatorPage;
+				return addLocatorPage();
 			}
 		}
 
@@ -121,9 +113,9 @@ public class AltConfigWizard extends Wizard {
 
 		int nextPageid = curQuestionPage.getPageNextID();
 		if (this.beginnerQuestions.hasMorePages() && nextPageid > -1) {
-			this.preferenceSelectionPage = new BeginnerTaskQuestionPage(this.beginnerQuestions.getPageByID(nextPageid), this.beginnerQuestions.getTask(), null);
-			addPage(this.preferenceSelectionPage);
-			return this.preferenceSelectionPage;
+			BeginnerTaskQuestionPage questionPage = new BeginnerTaskQuestionPage(this.beginnerQuestions.getPageByID(nextPageid), this.beginnerQuestions.getTask(), null);
+			addPage(questionPage);
+			return questionPage;
 		} else {
 			final InstanceGenerator instanceGenerator = new InstanceGenerator(CodeGenUtils.getResourceFromWithin(selectedTask.getModelFile())
 				.getAbsolutePath(), "c0_" + selectedTask.getName(), selectedTask.getDescription());
@@ -131,15 +123,19 @@ public class AltConfigWizard extends Wizard {
 			instanceGenerator.generateInstances(this.constraints);
 
 			if (instanceGenerator.getNoOfInstances() > 0) {
-				this.locatorPage = new LocatorPage("Locator");
-				addPage(this.locatorPage);
-				return this.locatorPage;
+				return addLocatorPage();
 			} else {
 				final String message = Constants.NO_POSSIBLE_COMBINATIONS_BEGINNER;
 				MessageDialog.openError(new Shell(), "Error", message);
 			}
 		}
 		return currentPage;
+	}
+
+	private IWizardPage addLocatorPage() {
+		LocatorPage locatorPage = new LocatorPage("Locator");
+		addPage(locatorPage);
+		return locatorPage;
 	}
 
 	/**
@@ -166,7 +162,6 @@ public class AltConfigWizard extends Wizard {
 					return prevPage;
 				}
 			}
-
 		}
 
 		return super.getPreviousPage(currentPage);
