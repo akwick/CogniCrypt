@@ -309,7 +309,7 @@
 	        }],
 	          "claferDependencies": [{
 	            "algorithm": "security",
-	            "value": "2",
+	            "value": "2"
 	          }],
 	          "nextID": "-1"
 	        },

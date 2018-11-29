@@ -339,10 +339,10 @@ public class HTTPSConnection {
             </xsl:when><xsl:otherwise>
             	String host
          </xsl:otherwise></xsl:choose>) {
-  url = new URL(host)
-  /** ToDo Check against documentation because of default implementation of HostnameVerifier and SSLSocketFactory
-  con = new HttpsURLConnection(host)  
-  socket = con.getSSLSocketFactory()
+  url = new URL(host);
+  /** ToDo Check against documentation because of default implementation of HostnameVerifier and SSLSocketFactory **/
+  con = new HttpsURLConnection(host);
+  socket = con.getSSLSocketFactory();
   reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
   }
   
