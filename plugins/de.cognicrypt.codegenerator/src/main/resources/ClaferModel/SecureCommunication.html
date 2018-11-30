@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+<style>.identifier{}
+.keyword{font-weight:bold}
+.reference{}
+.code { background-color: lightgray; padding: 5px 5px 5px 5px; border: 1px solid darkgray; margin-bottom: 15px; 
+        font-family: Pragmata, Menlo, 'DejaVu LGC Sans Mono', 'DejaVu Sans Mono', Consolas, 'Everson Mono', 'Lucida Console', 'Andale Mono', 'Nimbus Mono L', 'Liberation Mono', FreeMono, 'Osaka Monospaced', Courier, 'New Courier', monospace; }
+.standalonecomment { color: green; font-style:italic }
+.inlinecomment { color: green; padding-left:20px; font-style:italic }
+.error{background-color: yellow; color: red }
+.deprecated{color: orange }
+.indent{padding-left:20px}
+a[href$='Lookup failed'] {color: red}
+a[href$='Uid not found'] {color: red}
+a[href$='Ambiguous name'] {color: yellow}
+
+</style></head>
+<body>
+
+<div>
+<span class="keyword">abstract</span> <span class="claferDecl" id="c0_Enum">Enum</span></div>
+
+
+<div>
+<span class="keyword">abstract</span> <span class="claferDecl" id="c0_Security">Security</span><span class="keyword"> : </span><a href="#c0_Enum"><span class="reference">Enum</span></a><span class="keyword"> -> </span><a href="#integer"><span class="reference">integer</span></a></div>
+
+
+<div>
+<span class="claferDecl" id="c0_NoSecurity">NoSecurity</span><span class="keyword"> : </span><a href="#c0_Security"><span class="reference">Security</span></a> = 0</div>
+
+
+<div>
+<span class="claferDecl" id="c0_Broken">Broken</span><span class="keyword"> : </span><a href="#c0_Security"><span class="reference">Security</span></a> = 1</div>
+
+
+<div>
+<span class="claferDecl" id="c0_Weak">Weak</span><span class="keyword"> : </span><a href="#c0_Security"><span class="reference">Security</span></a> = 2</div>
+
+
+<div>
+<span class="claferDecl" id="c0_Medium">Medium</span><span class="keyword"> : </span><a href="#c0_Security"><span class="reference">Security</span></a> = 3</div>
+
+
+<div>
+<span class="claferDecl" id="c0_Strong">Strong</span><span class="keyword"> : </span><a href="#c0_Security"><span class="reference">Security</span></a> = 4</div>
+
+
+<div>
+<span class="keyword">abstract</span> <span class="claferDecl" id="c0_TLS_Version">TLS_Version</span><span class="keyword"> : </span><a href="#c0_Enum"><span class="reference">Enum</span></a><span class="keyword"> -> </span><a href="#integer"><span class="reference">integer</span></a></div>
+
+
+<div>
+<span class="claferDecl" id="c0_TLSv10">TLSv10</span><span class="keyword"> : </span><a href="#c0_TLS_Version"><span class="reference">TLS_Version</span></a> = 3</div>
+
+
+<div>
+<span class="claferDecl" id="c0_TLSv11">TLSv11</span><span class="keyword"> : </span><a href="#c0_TLS_Version"><span class="reference">TLS_Version</span></a> = 4</div>
+
+
+<div>
+<span class="claferDecl" id="c0_TLSv12">TLSv12</span><span class="keyword"> : </span><a href="#c0_TLS_Version"><span class="reference">TLS_Version</span></a> = 5</div>
+
+
+<div>
+<span class="keyword">abstract</span> <span class="claferDecl" id="c0_Task">Task</span>
+  <div class="indent">
+  <span class="claferDecl" id="c0_description">description</span><span class="keyword"> -> </span><a href="#string"><span class="reference">string</span></a></div>
+</div>
+
+
+<div>
+<span class="claferDecl" id="c0_SecureCommunication">SecureCommunication</span><span class="keyword"> : </span><a href="#c0_Task"><span class="reference">Task</span></a>
+  <div class="indent">
+  <span class="keyword">[</span> <a href="#c0_description"><span class="reference">description</span></a> = "Establish a Secure Network Connection" <span class="keyword">]</span></div>
+  <div class="indent">
+  <span class="claferDecl" id="c0_tlsProtocol">tlsProtocol</span><span class="keyword"> -> </span><a href="#c0_TLS_Version"><span class="reference">TLS_Version</span></a> 1..3 </div>
+  <div class="indent">
+  <span class="claferDecl" id="c0_secComsecurity">secComsecurity</span><span class="keyword"> -> </span><a href="#integer"><span class="reference">integer</span></a></div>
+</div>
+
+</body>
+</html>
