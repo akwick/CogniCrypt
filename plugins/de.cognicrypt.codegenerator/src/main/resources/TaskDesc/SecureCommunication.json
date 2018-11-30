@@ -10,16 +10,6 @@
 				"questionText": "Are you implementing the client side or server side?",
 				"answers": [
 					{
-						"value": "Server-side",
-						"codeDependencies": [
-							{
-								"option": "server",
-								"value": "true"
-							}
-						],
-						"nextID": "3"
-					},
-					{
 						"value": "Client-side",
 						"codeDependencies": [
 							{
@@ -28,6 +18,15 @@
 							}
 						],
 						"defaultAnswer": true
+					},{
+						"value": "Server-side",
+						"codeDependencies": [
+							{
+								"option": "server",
+								"value": "true"
+							}
+						],
+						"nextID": "3"
 					}
 				]
 			},
@@ -246,8 +245,11 @@
 				"answers": [
 					{
 						"value": "Modern Clients",
-						"codeDependencies": [
-						],
+				          "claferDependencies": [{
+				            "algorithm": "secComsecurity",
+				            "value": "4",
+				            "operator": "="
+				          }],
 						"defaultAnswer": true,
 						"nextID": "-1"
 					},
@@ -273,7 +275,7 @@
 	          "value": "Firefox 27",
 	          "defaultAnswer": true,
 	          "claferDependencies": [{
-	            "algorithm": "security",
+	            "algorithm": "secComsecurity",
 	            "value": "4",
 	            "operator": "="
 	          }],
@@ -283,7 +285,7 @@
 	          "value": "Chrome 30",
 	          "defaultAnswer": true,
 	          "claferDependencies": [{
-	            "algorithm": "security",
+	            "algorithm": "secComsecurity",
 	            "value": "4",
 	            "operator": "="
 	          }],
@@ -293,7 +295,7 @@
 	          "value": "Internet Explorer 11",
 	          "defaultAnswer": true,
 	          "claferDependencies": [{
-	            "algorithm": "security",
+	            "algorithm": "secComsecurity",
 	            "value": "4",
 	            "operator": "="
 	          }],
@@ -303,7 +305,7 @@
 	          "value": "Opera 17",
 	          "defaultAnswer": true,
 	          "claferDependencies": [{
-	            "algorithm": "security",
+	            "algorithm": "secComsecurity",
 	            "value": "4",
 	            "operator": "="
 	          }],
@@ -313,7 +315,7 @@
 	          "value": "Safari 9",
 	          "defaultAnswer": true,
 	          "claferDependencies": [{
-	            "algorithm": "security",
+	            "algorithm": "secComsecurity",
 	            "value": "4",
 	            "operator": "="
 	          }],
@@ -323,7 +325,7 @@
 	          "value": "Android 5",
 	          "defaultAnswer": true,
 	          "claferDependencies": [{
-	            "algorithm": "security",
+	            "algorithm": "secComsecurity",
 	            "value": "4",
 	            "operator": "="
 	          }],
@@ -333,7 +335,7 @@
 	          "value": "Java 8",
 	          "defaultAnswer": true,
 	          "claferDependencies": [{
-	            "algorithm": "security",
+	            "algorithm": "secComsecurity",
 	            "value": "4",
 	            "operator": "="
 	          }],
@@ -346,9 +348,13 @@
 	          "value" : "true"
 	        }],
 	          "claferDependencies": [{
-	            "algorithm": "security",
+	            "algorithm": "secComsecurity",
 	            "value": "2",
 	            "operator": "="
+	          },{
+	            "algorithm": "tlsProtocol",
+	            "value": "TLSv10;TLSv11;TLSv12",
+	            "operator": "++"
 	          }],
 	          "nextID": "-1"
 	        },
@@ -359,9 +365,13 @@
 	          "value" : "true"
 	        }],
 	          "claferDependencies": [{
-	            "algorithm": "security",
+	            "algorithm": "secComsecurity",
 	            "value": "2",
 	            "operator": "="
+	          },{
+	            "algorithm": "tlsProtocol",
+	            "value": "TLSv10;TLSv11;TLSv12",
+	            "operator": "++"
 	          }],
 	          "nextID": "-1"
 	        },
@@ -372,9 +382,13 @@
 	          "value" : "true"
 	        }],
 	          "claferDependencies": [{
-	            "algorithm": "security",
+	            "algorithm": "secComsecurity",
 	            "value": "2",
 	            "operator": "="
+	          },{
+	            "algorithm": "tlsProtocol",
+	            "value": "TLSv10;TLSv11;TLSv12",
+	            "operator": "++"
 	          }],
 	          "nextID": "-1"
 	        },
@@ -385,9 +399,13 @@
 	          "value" : "true"
 	        }],
 	          "claferDependencies": [{
-	            "algorithm": "security",
+	            "algorithm": "secComsecurity",
 	            "value": "2",
 	            "operator": "="
+	          },{
+	            "algorithm": "tlsProtocol",
+	            "value": "TLSv10;TLSv11;TLSv12",
+	            "operator": "++"
 	          }],
 	          "nextID": "-1"
 	        },
@@ -398,9 +416,13 @@
 	          "value" : "true"
 	        }],
 	          "claferDependencies": [{
-	            "algorithm": "security",
+	            "algorithm": "secComsecurity",
 	            "value": "2",
 	            "operator": "="
+	          },{
+	            "algorithm": "tlsProtocol",
+	            "value": "TLSv10;TLSv11;TLSv12",
+	            "operator": "++"
 	          }],
 	          "nextID": "-1"
 	        },
@@ -411,9 +433,13 @@
 	          "value" : "true"
 	        }],
 	          "claferDependencies": [{
-	            "algorithm": "security",
+	            "algorithm": "secComsecurity",
 	            "value": "2",
 	            "operator": "="
+	          },{
+	            "algorithm": "tlsProtocol",
+	            "value": "TLSv10;TLSv11;TLSv12",
+	            "operator": "++"
 	          }],
 	          "nextID": "-1"
 	        },
@@ -424,9 +450,13 @@
 	          "value" : "true"
 	        }],
 	          "claferDependencies": [{
-	            "algorithm": "security",
+	            "algorithm": "secComsecurity",
 	            "value": "2",
 	            "operator": "="
+	          },{
+	            "algorithm": "tlsProtocol",
+	            "value": "TLSv10;TLSv11;TLSv12",
+	            "operator": "++"
 	          }],
 	          "nextID": "-1"
 	        },
@@ -437,12 +467,12 @@
 	          "value" : "true"
 	        }],
 	          "claferDependencies": [{
-	            "algorithm": "security",
+	            "algorithm": "secComsecurity",
 	            "value": "2",
 	            "operator": "="
 	          },{
 	            "algorithm": "tlsProtocol",
-	            "value": "TLSv10,TLSv11, TLSv12",
+	            "value": "TLSv10;TLSv11;TLSv12",
 	            "operator": "++"
 	          } ],
 	          "nextID": "-1"       	      
