@@ -70,7 +70,7 @@
 				"questionText": "Do you want to set IP/hostname and port of the server you will communicate with?",
 				"answers": [
 					{
-						"value": "No/Do not care",
+						"value": "No/Keep it generic",
 						"codeDependencies": [
 						],
 						"defaultAnswer": true,
@@ -158,13 +158,259 @@
 		"nextID": "4"
 	},
 	{
-		"id": "4",
+	    "id": "4",
+	    "helpID": "TLS_Q4_Server",
+	    "content": [
+	        {
+	            "id": "0",
+	            "element": "radio",
+	           	"questionText": "Which clients should the server should at least support?",
+				"answers": [
+					{
+						"value": "Modern Clients",
+				          "claferDependencies": [{
+				            "algorithm": "secComsecurity",
+				            "value": "4",
+				            "operator": "="
+				          }],
+						"defaultAnswer": true,
+						"nextID": "6"
+					},
+					{
+						"value": "Legacy Clients",
+						"codeDependencies": [
+						],
+						"nextID": "5"
+					}
+				]	
+			}	        
+	    ]
+	},
+	{
+		"id": "5",
+		"helpID": "TLS_Q5_Server",
+		"content": [{
+	      "id": "0",
+	      "element":"checkbox",
+	      "note": "It is highly discouraged to enable support for any of the non-selected options. Supporting even older clients in a secure manner is not possible.",      
+	      "questionText": "Which clients should the server support at the very least?",
+	      "answers": [{
+	          "value": "Firefox 27",
+	          "defaultAnswer": true,
+	          "claferDependencies": [{
+	            "algorithm": "secComsecurity",
+	            "value": "4",
+	            "operator": "="
+	          }],
+	          "nextID": "6"
+	        },
+	        {
+	          "value": "Chrome 30",
+	          "defaultAnswer": true,
+	          "claferDependencies": [{
+	            "algorithm": "secComsecurity",
+	            "value": "4",
+	            "operator": "="
+	          }],
+	          "nextID": "6"
+	        },
+	        {
+	          "value": "Internet Explorer 11",
+	          "defaultAnswer": true,
+	          "claferDependencies": [{
+	            "algorithm": "secComsecurity",
+	            "value": "4",
+	            "operator": "="
+	          }],
+	          "nextID": "6"
+	        },
+	        {
+	          "value": "Opera 17",
+	          "defaultAnswer": true,
+	          "claferDependencies": [{
+	            "algorithm": "secComsecurity",
+	            "value": "4",
+	            "operator": "="
+	          }],
+	          "nextID": "6"
+	        },
+	        {
+	          "value": "Safari 9",
+	          "defaultAnswer": true,
+	          "claferDependencies": [{
+	            "algorithm": "secComsecurity",
+	            "value": "4",
+	            "operator": "="
+	          }],
+	          "nextID": "6"
+	        },
+	        {
+	          "value": "Android 5",
+	          "defaultAnswer": true,
+	          "claferDependencies": [{
+	            "algorithm": "secComsecurity",
+	            "value": "4",
+	            "operator": "="
+	          }],
+	          "nextID": "6"
+	        },
+	        {
+	          "value": "Java 8",
+	          "defaultAnswer": true,
+	          "claferDependencies": [{
+	            "algorithm": "secComsecurity",
+	            "value": "4",
+	            "operator": "="
+	          }],
+	          "nextID": "6"
+	        },
+	        {
+	          "value": "Firefox 1",
+	        "codeDependencies":[{
+	          "option":"legacy", 
+	          "value" : "true"
+	        }],
+	          "claferDependencies": [{
+	            "algorithm": "secComsecurity",
+	            "value": "2",
+	            "operator": "="
+	          },{
+	            "algorithm": "tlsProtocol",
+	            "value": "TLSv10;TLSv11;TLSv12",
+	            "operator": "++"
+	          }],
+	          "nextID": "6"
+	        },
+	        {
+	          "value": "Chrome 1",
+	          "codeDependencies":[{
+	          "option":"legacy", 
+	          "value" : "true"
+	        }],
+	          "claferDependencies": [{
+	            "algorithm": "secComsecurity",
+	            "value": "2",
+	            "operator": "="
+	          },{
+	            "algorithm": "tlsProtocol",
+	            "value": "TLSv10;TLSv11;TLSv12",
+	            "operator": "++"
+	          }],
+	          "nextID": "6"
+	        },
+	        {
+	          "value": "Internet Explorer 7",
+	          "codeDependencies":[{
+	          "option":"legacy", 
+	          "value" : "true"
+	        }],
+	          "claferDependencies": [{
+	            "algorithm": "secComsecurity",
+	            "value": "2",
+	            "operator": "="
+	          },{
+	            "algorithm": "tlsProtocol",
+	            "value": "TLSv10;TLSv11;TLSv12",
+	            "operator": "++"
+	          }],
+	          "nextID": "6"
+	        },
+	        {
+	          "value": "Opera 5",
+	          "codeDependencies":[{
+	          "option":"legacy", 
+	          "value" : "true"
+	        }],
+	          "claferDependencies": [{
+	            "algorithm": "secComsecurity",
+	            "value": "2",
+	            "operator": "="
+	          },{
+	            "algorithm": "tlsProtocol",
+	            "value": "TLSv10;TLSv11;TLSv12",
+	            "operator": "++"
+	          }],
+	          "nextID": "6"
+	        },
+	        {
+	          "value": "Safari 1",
+	          "codeDependencies":[{
+	          "option":"legacy", 
+	          "value" : "true"
+	        }],
+	          "claferDependencies": [{
+	            "algorithm": "secComsecurity",
+	            "value": "2",
+	            "operator": "="
+	          },{
+	            "algorithm": "tlsProtocol",
+	            "value": "TLSv10;TLSv11;TLSv12",
+	            "operator": "++"
+	          }],
+	          "nextID": "6"
+	        },
+	        {
+	          "value": "Android 2.3",
+	          "codeDependencies":[{
+	          "option":"legacy", 
+	          "value" : "true"
+	        }],
+	          "claferDependencies": [{
+	            "algorithm": "secComsecurity",
+	            "value": "2",
+	            "operator": "="
+	          },{
+	            "algorithm": "tlsProtocol",
+	            "value": "TLSv10;TLSv11;TLSv12",
+	            "operator": "++"
+	          }],
+	          "nextID": "6"
+	        },
+	        {
+	          "value": "Java 7",
+	          "codeDependencies":[{
+	          "option":"legacy", 
+	          "value" : "true"
+	        }],
+	          "claferDependencies": [{
+	            "algorithm": "secComsecurity",
+	            "value": "2",
+	            "operator": "="
+	          },{
+	            "algorithm": "tlsProtocol",
+	            "value": "TLSv10;TLSv11;TLSv12",
+	            "operator": "++"
+	          }],
+	          "nextID": "6"
+	        },
+	        {
+	          "value": "Windows XP",
+	          "codeDependencies":[{
+	          "option":"legacy", 
+	          "value" : "true"
+	        }],
+	          "claferDependencies": [{
+	            "algorithm": "secComsecurity",
+	            "value": "2",
+	            "operator": "="
+	          },{
+	            "algorithm": "tlsProtocol",
+	            "value": "TLSv10;TLSv11;TLSv12",
+	            "operator": "++"
+	          } ],
+	          "nextID": "6"       	      
+			}], 
+	      "nextID": "6"
+		}]
+	},
+	{
+		"id": "6",
 		"helpID": "TLS_Q3_Server",		
 		"content": [
 			{			
 				"id": "0",
 				"element": "rbtextgroup",
-				"questionText": "To set up a secure connection, you need a key. Please select your key source. One such source is a keystore. Keystores may contain several cryptogaphic keys and store them securely protected by passwords. Another source is a certificate. Certificates provide means to authenticate yourself to other parties.",
+				"questionText": "Lastly, to set up a secure connection, you need a key. Please select your key source. One such source is a keystore. Keystores may contain several cryptogaphic keys and store them securely protected by passwords. Another source is a certificate. Certificates provide means to authenticate yourself to other parties.",
 				"answers": [
 					{
 						"value": "Import keystore",
@@ -178,6 +424,9 @@
 							{
 								"option": "rows",
 								"value": "1"
+							}, {
+								"option": "label1",
+								"value": "Keystore"
 							}
 						],
 						"defaultAnswer": true
@@ -194,6 +443,9 @@
 							{
 								"option": "rows",
 								"value": "1"
+							},{
+								"option": "label1",
+								"value": "Key + Certificate"
 							}
 						]
 					},
@@ -232,252 +484,6 @@
 				]
 			}
 		],
-		"nextID": "5"
-	},
-	{
-	    "id": "5",
-	    "helpID": "TLS_Q4_Server",
-	    "content": [
-	        {
-	            "id": "0",
-	            "element": "radio",
-	           	"questionText": "Which clients should the server should at least support?",
-				"answers": [
-					{
-						"value": "Modern Clients",
-				          "claferDependencies": [{
-				            "algorithm": "secComsecurity",
-				            "value": "4",
-				            "operator": "="
-				          }],
-						"defaultAnswer": true,
-						"nextID": "-1"
-					},
-					{
-						"value": "Legacy Clients",
-						"codeDependencies": [
-						],
-						"nextID": "6"
-					}
-				]	
-			}	        
-	    ]
-	},
-	{
-		"id": "6",
-		"helpID": "TLS_Q5_Server",
-		"content": [{
-	      "id": "0",
-	      "element":"checkbox",
-	      "note": "It is highly discouraged to enable support for any of the non-selected options. Supporting even older clients in a secure manner is not possible.",      
-	      "questionText": "Which clients should the server support at the very least?",
-	      "answers": [{
-	          "value": "Firefox 27",
-	          "defaultAnswer": true,
-	          "claferDependencies": [{
-	            "algorithm": "secComsecurity",
-	            "value": "4",
-	            "operator": "="
-	          }],
-	          "nextID": "-1"
-	        },
-	        {
-	          "value": "Chrome 30",
-	          "defaultAnswer": true,
-	          "claferDependencies": [{
-	            "algorithm": "secComsecurity",
-	            "value": "4",
-	            "operator": "="
-	          }],
-	          "nextID": "-1"
-	        },
-	        {
-	          "value": "Internet Explorer 11",
-	          "defaultAnswer": true,
-	          "claferDependencies": [{
-	            "algorithm": "secComsecurity",
-	            "value": "4",
-	            "operator": "="
-	          }],
-	          "nextID": "-1"
-	        },
-	        {
-	          "value": "Opera 17",
-	          "defaultAnswer": true,
-	          "claferDependencies": [{
-	            "algorithm": "secComsecurity",
-	            "value": "4",
-	            "operator": "="
-	          }],
-	          "nextID": "-1"
-	        },
-	        {
-	          "value": "Safari 9",
-	          "defaultAnswer": true,
-	          "claferDependencies": [{
-	            "algorithm": "secComsecurity",
-	            "value": "4",
-	            "operator": "="
-	          }],
-	          "nextID": "-1"
-	        },
-	        {
-	          "value": "Android 5",
-	          "defaultAnswer": true,
-	          "claferDependencies": [{
-	            "algorithm": "secComsecurity",
-	            "value": "4",
-	            "operator": "="
-	          }],
-	          "nextID": "-1"
-	        },
-	        {
-	          "value": "Java 8",
-	          "defaultAnswer": true,
-	          "claferDependencies": [{
-	            "algorithm": "secComsecurity",
-	            "value": "4",
-	            "operator": "="
-	          }],
-	          "nextID": "-1"
-	        },
-	        {
-	          "value": "Firefox 1",
-	        "codeDependencies":[{
-	          "option":"legacy", 
-	          "value" : "true"
-	        }],
-	          "claferDependencies": [{
-	            "algorithm": "secComsecurity",
-	            "value": "2",
-	            "operator": "="
-	          },{
-	            "algorithm": "tlsProtocol",
-	            "value": "TLSv10;TLSv11;TLSv12",
-	            "operator": "++"
-	          }],
-	          "nextID": "-1"
-	        },
-	        {
-	          "value": "Chrome 1",
-	          "codeDependencies":[{
-	          "option":"legacy", 
-	          "value" : "true"
-	        }],
-	          "claferDependencies": [{
-	            "algorithm": "secComsecurity",
-	            "value": "2",
-	            "operator": "="
-	          },{
-	            "algorithm": "tlsProtocol",
-	            "value": "TLSv10;TLSv11;TLSv12",
-	            "operator": "++"
-	          }],
-	          "nextID": "-1"
-	        },
-	        {
-	          "value": "Internet Explorer 7",
-	          "codeDependencies":[{
-	          "option":"legacy", 
-	          "value" : "true"
-	        }],
-	          "claferDependencies": [{
-	            "algorithm": "secComsecurity",
-	            "value": "2",
-	            "operator": "="
-	          },{
-	            "algorithm": "tlsProtocol",
-	            "value": "TLSv10;TLSv11;TLSv12",
-	            "operator": "++"
-	          }],
-	          "nextID": "-1"
-	        },
-	        {
-	          "value": "Opera 5",
-	          "codeDependencies":[{
-	          "option":"legacy", 
-	          "value" : "true"
-	        }],
-	          "claferDependencies": [{
-	            "algorithm": "secComsecurity",
-	            "value": "2",
-	            "operator": "="
-	          },{
-	            "algorithm": "tlsProtocol",
-	            "value": "TLSv10;TLSv11;TLSv12",
-	            "operator": "++"
-	          }],
-	          "nextID": "-1"
-	        },
-	        {
-	          "value": "Safari 1",
-	          "codeDependencies":[{
-	          "option":"legacy", 
-	          "value" : "true"
-	        }],
-	          "claferDependencies": [{
-	            "algorithm": "secComsecurity",
-	            "value": "2",
-	            "operator": "="
-	          },{
-	            "algorithm": "tlsProtocol",
-	            "value": "TLSv10;TLSv11;TLSv12",
-	            "operator": "++"
-	          }],
-	          "nextID": "-1"
-	        },
-	        {
-	          "value": "Android 2.3",
-	          "codeDependencies":[{
-	          "option":"legacy", 
-	          "value" : "true"
-	        }],
-	          "claferDependencies": [{
-	            "algorithm": "secComsecurity",
-	            "value": "2",
-	            "operator": "="
-	          },{
-	            "algorithm": "tlsProtocol",
-	            "value": "TLSv10;TLSv11;TLSv12",
-	            "operator": "++"
-	          }],
-	          "nextID": "-1"
-	        },
-	        {
-	          "value": "Java 7",
-	          "codeDependencies":[{
-	          "option":"legacy", 
-	          "value" : "true"
-	        }],
-	          "claferDependencies": [{
-	            "algorithm": "secComsecurity",
-	            "value": "2",
-	            "operator": "="
-	          },{
-	            "algorithm": "tlsProtocol",
-	            "value": "TLSv10;TLSv11;TLSv12",
-	            "operator": "++"
-	          }],
-	          "nextID": "-1"
-	        },
-	        {
-	          "value": "Windows XP",
-	          "codeDependencies":[{
-	          "option":"legacy", 
-	          "value" : "true"
-	        }],
-	          "claferDependencies": [{
-	            "algorithm": "secComsecurity",
-	            "value": "2",
-	            "operator": "="
-	          },{
-	            "algorithm": "tlsProtocol",
-	            "value": "TLSv10;TLSv11;TLSv12",
-	            "operator": "++"
-	          } ],
-	          "nextID": "-1"       	      
-			}], 
-	      "nextID": "-1"
-		}]
+		"nextID": "-1"
 	}
 ]

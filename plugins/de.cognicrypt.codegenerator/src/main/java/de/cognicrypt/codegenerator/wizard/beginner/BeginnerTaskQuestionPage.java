@@ -33,14 +33,12 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -49,8 +47,6 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Scale;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 
@@ -189,7 +185,7 @@ public class BeginnerTaskQuestionPage extends WizardPage {
 			if (answer == null || answer.getValue().isEmpty()) {
 				return false;
 			}
-			if (Arrays.asList((new GUIElements[] { GUIElements.button, GUIElements.itemselection, GUIElements.radio, GUIElements.scale, GUIElements.checkbox })).contains(question.getElement())) {
+			if (Arrays.asList((new GUIElements[] { GUIElements.button, GUIElements.radio, GUIElements.checkbox })).contains(question.getElement())) {
 				return this.finish;
 			}
 		}
@@ -374,63 +370,6 @@ public class BeginnerTaskQuestionPage extends WizardPage {
 
 				this.finish = true;
 				BeginnerTaskQuestionPage.this.setPageComplete(this.finish);
-				break;
-
-			case scale:
-				for (int i = 0; i < answers.size(); i++) {
-					if (i == 0) {
-						Label label1 = new Label(container, SWT.NONE);
-						label1.setText(answers.get(i).getValue());
-					}
-				}
-
-				final Scale scale = new Scale(container, SWT.HORIZONTAL);
-				scale.setMaximum((answers.size()) - 1);
-				scale.setMinimum(0);
-				scale.setPageIncrement(1);
-
-				for (int i = 0; i < answers.size(); i++) {
-					if (i == (answers.size() - 1)) {
-						Label label2 = new Label(container, SWT.NONE);
-						label2.setText(answers.get(i).getValue());
-					}
-				}
-
-				for (int i = 0; i < answers.size(); i++) {
-					scale.addSelectionListener(new SelectionAdapter() {
-
-						@Override
-						public void widgetSelected(final SelectionEvent selectionEvent) {
-							final int selectionNum = scale.getSelection();
-							scale.setToolTipText(answers.get(selectionNum).getValue());
-							BeginnerTaskQuestionPage.this.selectionMap.put(question, answers.get(selectionNum));
-							question.setEnteredAnswer(answers.get(selectionNum));
-						}
-
-					});
-				}
-
-				if (question.getEnteredAnswer() != null) {
-					for (int i = 0; i < answers.size(); i++) {
-						if (answers.get(i).getValue().equals(question.getEnteredAnswer().getValue())) {
-							scale.setSelection(i);
-							scale.setToolTipText(answers.get(i).getValue());
-							BeginnerTaskQuestionPage.this.selectionMap.put(question, answers.get(i));
-							question.setEnteredAnswer(answers.get(i));
-						}
-					}
-				} else {
-					for (int i = 0; i < answers.size(); i++) {
-						if (answers.get(i).getValue().equals(question.getDefaultAnswer().getValue())) {
-							scale.setSelection(i);
-							scale.setToolTipText(answers.get(i).getValue());
-							BeginnerTaskQuestionPage.this.selectionMap.put(question, answers.get(i));
-							question.setEnteredAnswer(answers.get(i));
-						}
-					}
-				}
-
-				BeginnerTaskQuestionPage.this.setPageComplete(this.finish = true);
 				break;
 
 			case rbtextgroup:
@@ -696,159 +635,6 @@ public class BeginnerTaskQuestionPage extends WizardPage {
 				if (question.getDefaultAnswer().getCodeDependencies() != null) {
 					inputField.setText(question.getDefaultAnswer().getCodeDependencies().get(0).getValue());
 				}
-				break;
-
-			case itemselection:
-				final Composite compositeControl = new Composite(parent, SWT.NONE);
-				GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, true);
-				compositeControl.setLayoutData(gridData);
-				compositeControl.setLayout(new GridLayout(4, false));
-
-				final org.eclipse.swt.widgets.List itemList = new org.eclipse.swt.widgets.List(compositeControl, SWT.LEFT | SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
-				GridData myGrid = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
-				myGrid.widthHint = 270;
-				myGrid.heightHint = 180;
-				itemList.setLayoutData(myGrid);
-
-				final Composite composite = new Composite(compositeControl, SWT.NONE);
-				composite.setLayout(new GridLayout(1, false));
-
-				final Button moveRightButton = new Button(composite, SWT.TOP);
-				final Button moveLeftButton = new Button(composite, SWT.BOTTOM);
-
-				moveRightButton.setText("  -Select->  ");
-				moveLeftButton.setText("<-Deselect-");
-				moveRightButton.setEnabled(false);
-				moveLeftButton.setEnabled(false);
-
-				final org.eclipse.swt.widgets.List selectedItemList = new org.eclipse.swt.widgets.List(compositeControl, SWT.RIGHT | SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
-				myGrid = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
-				myGrid.widthHint = 270;
-				myGrid.heightHint = 180;
-				selectedItemList.setLayoutData(myGrid);
-
-				for (final String value : this.selectionValues) {
-					itemList.add(value);
-					//selectedItemList.add("                                                                                       ");
-				}
-
-				itemList.addSelectionListener(new SelectionListener() {
-
-					@Override
-					public void widgetDefaultSelected(final SelectionEvent e) {
-						return;
-					}
-
-					@Override
-					public void widgetSelected(final SelectionEvent e) {
-						if (e.getSource() instanceof org.eclipse.swt.widgets.List) {
-							final org.eclipse.swt.widgets.List sel = (org.eclipse.swt.widgets.List) e.getSource();
-							moveRightButton.setEnabled(sel.getSelectionCount() > 0);
-						}
-
-					}
-				});
-
-				selectedItemList.addSelectionListener(new SelectionListener() {
-
-					@Override
-					public void widgetDefaultSelected(final SelectionEvent e) {
-						return;
-					}
-
-					@Override
-					public void widgetSelected(final SelectionEvent e) {
-						if (e.getSource() instanceof org.eclipse.swt.widgets.List) {
-							final org.eclipse.swt.widgets.List sel = (org.eclipse.swt.widgets.List) e.getSource();
-							moveLeftButton.setEnabled(sel.getSelectionCount() > 0);
-						}
-
-					}
-				});
-
-				moveRightButton.addSelectionListener(new SelectionListener() {
-
-					@Override
-					public void widgetDefaultSelected(final SelectionEvent e) {
-						return;
-					}
-
-					@Override
-					public void widgetSelected(final SelectionEvent e) {
-						if (e.getSource() instanceof Button && (((Button) e.getSource()).getStyle() & SWT.NONE) == SWT.NONE) {
-							final String[] sel = itemList.getSelection();
-							Answer ans = null;
-							// Since this part is for the item selection, there will only be a single entry for this page.
-							for (final Entry<Question, Answer> selectionEntry : BeginnerTaskQuestionPage.this.selectionMap.entrySet()) {
-								ans = selectionEntry.getValue();
-							}
-							final StringBuilder checkedElement = new StringBuilder();
-							if (ans == null) {
-								ans = new Answer();
-								// TODO Why is this -1? Does it still make sense after having introduced multiple questions per page?
-								ans.setNextID(-1);
-							} else {
-								checkedElement.append(ans.getValue());
-							}
-
-							if (selectedItemList.getItemCount() > 0 && selectedItemList.getItem(0).trim().isEmpty()) {
-								selectedItemList.removeAll();
-								selectedItemList.setEnabled(true);
-							}
-
-							for (final String item : sel) {
-								selectedItemList.add(item);
-								itemList.remove(item);
-								checkedElement.append(item);
-								checkedElement.append(";");
-							}
-							ans.setValue(checkedElement.toString());
-							BeginnerTaskQuestionPage.this.finish = ans.getValue().contains(";");
-							BeginnerTaskQuestionPage.this.setPageComplete(BeginnerTaskQuestionPage.this.finish);
-							BeginnerTaskQuestionPage.this.selectionMap.put(question, ans);
-							moveRightButton.setEnabled(false);
-						}
-					}
-				});
-
-				moveLeftButton.addSelectionListener(new SelectionListener() {
-
-					@Override
-					public void widgetDefaultSelected(final SelectionEvent e) {
-						return;
-					}
-
-					@Override
-					public void widgetSelected(final SelectionEvent e) {
-						if (e.getSource() instanceof Button && (((Button) e.getSource()).getStyle() & SWT.NONE) == SWT.NONE) {
-							final String[] sel = selectedItemList.getSelection();
-
-							Answer ans = null;
-							// Since this part is for the item selection, there will only be a single entry for this page.
-							for (final Entry<Question, Answer> selectionEntry : BeginnerTaskQuestionPage.this.selectionMap.entrySet()) {
-								ans = selectionEntry.getValue();
-							}
-							if (ans == null) {
-								ans = new Answer();
-								ans.setNextID(-1);
-							}
-							String checkedElement = ans.getValue();
-
-							for (final String item : sel) {
-								selectedItemList.remove(item);
-								if (!item.trim().isEmpty()) {
-									itemList.add(item);
-									checkedElement = checkedElement.replace(item + ";", "");
-								}
-							}
-							ans.setValue(checkedElement);
-							BeginnerTaskQuestionPage.this.finish = ans.getValue().contains(";");
-							BeginnerTaskQuestionPage.this.setPageComplete(BeginnerTaskQuestionPage.this.finish);
-							BeginnerTaskQuestionPage.this.selectionMap.put(question, ans);
-							moveLeftButton.setEnabled(false);
-						}
-					}
-				});
 				break;
 
 			case button:

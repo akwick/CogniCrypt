@@ -41,5 +41,4 @@ c0_description.refToUnique(string);
 c0_SecureCommunication.extending(c0_Task);
 c0_SecureCommunication.addConstraint(equal(joinRef(join($this(), c0_description)), constant("\"Establish a Secure Network Connection\"")));
 c0_tlsProtocol.refToUnique(c0_TLS_Version);
-c0_SecureCommunication.addConstraint(equal(joinRef(join($this(), c0_tlsProtocol)), union(union(global(c0_TLSv12), global(c0_TLSv11)), global(c0_TLSv10))));
 c0_secComsecurity.refToUnique(Int);
