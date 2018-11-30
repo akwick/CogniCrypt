@@ -164,20 +164,71 @@
 		"content": [
 			{			
 				"id": "0",
-				"tooltip": "Example: 443",
-				"element": "text",
-				"textType": "key number",
-				"questionText": "To set up a secure connection, you need a key.",
+				"element": "rbtextgroup",
+				"questionText": "To set up a secure connection, you need a key. Please select your key source. One such source is a keystore. Keystores may contain several cryptogaphic keys and store them securely protected by passwords. Another source is a certificate. Certificates provide means to authenticate yourself to other parties.",
 				"answers": [
 					{
-						"value": "",
+						"value": "Import keystore",
+						"codeDependencies": [
+							{
+								"option": "key",
+								"value": "import"
+							}
+						],
+						"uiDependencies": [
+							{
+								"option": "rows",
+								"value": "1"
+							}
+						],
+						"defaultAnswer": true
+					},
+					{
+						"value": "Import certificate with bundled private key (one file)",
 						"codeDependencies": [
 							{
 								"option": "key",
 								"value": "key"
 							}
 						],
-						"defaultAnswer": true
+						"uiDependencies": [
+							{
+								"option": "rows",
+								"value": "1"
+							}
+						]
+					},
+					{
+						"value": "Import certificate with associated private key (two files)",
+						"codeDependencies": [
+							{
+								"option": "key",
+								"value": "both"
+							}
+						],
+						"uiDependencies": [
+							{
+								"option": "rows",
+								"value": "2"
+							},
+							{
+								"option": "label1",
+								"value": "Key"
+							},
+							{
+								"option": "label2",
+								"value": "Certificate"
+							}
+						]
+					},
+					{
+						"value": "Generate new keystore",
+						"codeDependencies": [
+							{
+								"option": "key",
+								"value": "new"
+							}
+						]
 					}
 				]
 			}
