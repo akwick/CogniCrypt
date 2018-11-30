@@ -330,9 +330,9 @@ package <xsl:value-of select="//task/Package"/>;
 /** @author CogniCrypt */
 public class HTTPSConnection {	
   private static HttpsURLConnection con = null;
-  private static SSLSocket socket = null;
   private static BufferedReader reader = null;
   private static BufferedWriter writer = null;
+  private static URL url = null;
 
   public HTTPSConnection(<xsl:choose><xsl:when test="//task/code/host">
             	"<xsl:value-of select="//task/code/host"/>
@@ -340,24 +340,22 @@ public class HTTPSConnection {
             	String host
          </xsl:otherwise></xsl:choose>) {
   url = new URL(host);
-  /** ToDo Check against documentation because of default implementation of HostnameVerifier and SSLSocketFactory **/
   con = new HttpsURLConnection(host);
-  socket = con.getSSLSocketFactory();
-  reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+  con.setConnectTimeout(6000);
   }
   
-  	public void closeConnection() {
-		try {
-		if (!sslsocket.isClosed()) {
-			sslsocket.close();
-		}
-		} catch (IOException ex) {
-			System.out.println("Could not close channel.");
-			ex.printStackTrace();
-		}
+  	private void closeConnection() {
+		con.disconnect()
 	}
 	
-	public String receiveData() {
+	private void openConnection() throws IOException {
+		con.connect();
+	}
+	
+	public String get() throws IOException {
+		con.setRequestMethod("GET");
+		openConnection();
+		reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
 		try {
 			return reader.readLine();
 		} catch (IOException ex) {
@@ -365,10 +363,19 @@ public class HTTPSConnection {
 			ex.printStackTrace();
 			return null;
 		}
+		finally {
+			reader.close();
+			closeConnection();
+		}
 	}
-
-	public boolean sendData(String content) {
+	
+		public boolean post(String content) throws IOException {
+		con.setRequestMethod("POST");
+		con.setDoOutput(true);
+		openConnection();
+		
 		try {
+			writer = new BufferedWriter(new OutputStreamWriter(con.getOutputStream()));
 			writer.write(content + "\n");
 			writer.flush();
 			return true;
@@ -376,6 +383,9 @@ public class HTTPSConnection {
 			System.out.println("Sending data failed.");
 			ex.printStackTrace();
 			return false;
+		}
+		finally {
+			writer.close();
 		}
 	}
 	
@@ -390,24 +400,19 @@ public class Output {
 	public void templateUsage(<xsl:choose>
          <xsl:when test="//task/code/host"></xsl:when>
          <xsl:otherwise>String host</xsl:otherwise>
-		 </xsl:choose>
-		 <xsl:choose>
-         <xsl:when test="//task/code/port"></xsl:when>
-         <xsl:otherwise>,int port</xsl:otherwise></xsl:choose>) {
-         //You need to set the right host (first parameter) and the port name (second parameter). If you wish to pass a IP address, please use overload with InetAdress as second parameter instead of string.
+		 </xsl:choose>) {
 		 HTTPSConnection https = new HTTPSConnection(<xsl:choose>
          <xsl:when test="//task/code/host"></xsl:when>
          <xsl:otherwise>host</xsl:otherwise>
-		 </xsl:choose>
-		 <xsl:choose>
-         <xsl:when test="//task/code/port"></xsl:when>
-         <xsl:otherwise>, port</xsl:otherwise>
 		 </xsl:choose>);
 		 
-		 Boolean sendingSuccessful = https.sendData("");
-		 String data = htpps.receiveData();
+		// HTTPS get example
+		String data = https.get();
+		System.out.println("received by get: " + data);	
 		
-		 https.closeConnection();		
+		// HTTPS post example
+		// Boolean suc = https.post("Test");
+		// System.out.println("received by post maintest: " + suc);
 	}
 	
 	
