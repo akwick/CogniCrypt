@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.eclipse.jface.fieldassist.ControlDecoration;
@@ -39,14 +40,17 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Scale;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 
@@ -299,24 +303,6 @@ public class BeginnerTaskQuestionPage extends WizardPage {
 
 				BeginnerTaskQuestionPage.this.setPageComplete(this.finish = true);
 				break;
-
-			case rbtextgroup:
-				for(Answer answer: answers) {
-					String rows = answer.getUIDependency("rows");
-					int numRows = (rows == null)? 0 : Integer.parseInt(rows);
-					Button radioButton = new Button(container, SWT.RADIO);
-					radioButton.setText(answer.getValue());
-					for(int row = 1; row <= numRows; row++) {
-						String labelOption = "Label" + row;
-						String labelText = answer.getUIDependency(labelOption);
-						Label groupLabel = new Label(container, SWT.NONE);
-						groupLabel.setText(labelText);
-						Text pathText = new Text(container, SWT.FILL);
-						pathText.setEnabled(false);
-					}
-				}
-				BeginnerTaskQuestionPage.this.setPageComplete(this.finish = true);
-				break;
 				
 			case checkbox:
 				final List<Button> cbs = new ArrayList<Button>();
@@ -447,6 +433,89 @@ public class BeginnerTaskQuestionPage extends WizardPage {
 				BeginnerTaskQuestionPage.this.setPageComplete(this.finish = true);
 				break;
 
+			case rbtextgroup:
+				
+				final Composite rbbtnControl = new Composite(parent, SWT.NONE);
+				GridData rbbtnControlData = new GridData(GridData.FILL, GridData.FILL, false, false);
+				rbbtnControl.setLayoutData(rbbtnControlData);
+				rbbtnControl.setLayout(new GridLayout(3, false));
+				
+				Map<Button, List<Control>> rbgroups = new HashMap<Button, List<Control>>();
+				
+				for(Answer answer: answers) {
+					boolean isDefaultAnswer = answer.isDefaultAnswer();
+					String rows = answer.getUIDependency("rows");
+					int numRows = (rows == null)? 0 : Integer.parseInt(rows);
+					
+					Button radioButton = new Button(rbbtnControl, SWT.RADIO);
+					radioButton.setSelection(isDefaultAnswer);
+					radioButton.setText(answer.getValue());
+					radioButton.setLayoutData(new GridData(GridData.FILL,GridData.FILL,false, false, 3, 1));
+					
+					rbgroups.put(radioButton, new ArrayList<Control>(numRows));
+					for(int i = 1; i <= numRows; i++) {
+						final int row = i;
+						String labelOption = "label" + row;
+						String labelText = answer.getUIDependency(labelOption);
+						if(labelText == null) {
+							labelText = "";
+						}
+						Label groupLabel = new Label(rbbtnControl, SWT.CENTER);
+						groupLabel.setText(labelText);
+						groupLabel.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false ,1,1));
+						
+						Text pathText = new Text(rbbtnControl, SWT.BORDER);
+						pathText.setEnabled(isDefaultAnswer);
+						pathText.setEditable(false);
+						pathText.setLayoutData( new GridData(GridData.FILL, GridData.FILL, true, false ,1,1));
+						Button browse = new Button(rbbtnControl, SWT.PUSH);
+						browse.setText(Constants.BROWSE);
+						browse.setEnabled(isDefaultAnswer);
+						browse.setLayoutData( new GridData(GridData.FILL, GridData.FILL, false, false ,1,1));
+						browse.addSelectionListener(new SelectionAdapter() {
+
+							public void widgetSelected(SelectionEvent e) {
+								FileDialog fileDialog = new FileDialog(getShell(), SWT.NULL);
+								String extension = answer.getUIDependency("extension" + row);
+								if(extension != null) {
+									fileDialog.setFilterExtensions(new String[] {extension});
+								}
+								String path = fileDialog.open();
+								if (path != null) {
+									pathText.setText(path);
+									
+								}
+							}
+						});
+						
+						List<Control> curList = rbgroups.get(radioButton);
+						curList.add(pathText);
+						curList.add(browse);
+						rbgroups.put(radioButton, curList);
+					}
+					
+					radioButton.addSelectionListener(new SelectionAdapter() {
+						
+						@Override
+						public void widgetSelected(final SelectionEvent selectionEvent) {
+							final Button btn = (Button) selectionEvent.getSource();
+							
+							for(Button curSelection : rbgroups.keySet()) {
+								boolean isEnabled = curSelection == btn;
+								if(isEnabled) {
+									question.setEnteredAnswer(answer);
+								}
+								
+								rbgroups.get(curSelection).stream().forEach(control -> control.setEnabled(isEnabled));
+							}		
+						}
+					});
+				}
+				
+				question.setEnteredAnswer(question.getDefaultAnswer());
+				BeginnerTaskQuestionPage.this.setPageComplete(this.finish = true);
+				break;	
+				
 			case text:
 				
 				final Text inputField = new Text(container, SWT.BORDER);
@@ -1067,4 +1136,4 @@ class RadioButtonGroup {
 			b.setEnabled(isActive);
 		}
 	}
-};
+};;

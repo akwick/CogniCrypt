@@ -10,16 +10,6 @@
 				"questionText": "Are you implementing the client side or server side?",
 				"answers": [
 					{
-						"value": "Server-side",
-						"codeDependencies": [
-							{
-								"option": "server",
-								"value": "true"
-							}
-						],
-						"nextID": "3"
-					},
-					{
 						"value": "Client-side",
 						"codeDependencies": [
 							{
@@ -28,6 +18,15 @@
 							}
 						],
 						"defaultAnswer": true
+					},{
+						"value": "Server-side",
+						"codeDependencies": [
+							{
+								"option": "server",
+								"value": "true"
+							}
+						],
+						"nextID": "3"
 					}
 				]
 			},
@@ -164,20 +163,71 @@
 		"content": [
 			{			
 				"id": "0",
-				"tooltip": "Example: 443",
-				"element": "text",
-				"textType": "key number",
-				"questionText": "To set up a secure connection, you need a key.",
+				"element": "rbtextgroup",
+				"questionText": "To set up a secure connection, you need a key. Please select your key source. One such source is a keystore. Keystores may contain several cryptogaphic keys and store them securely protected by passwords. Another source is a certificate. Certificates provide means to authenticate yourself to other parties.",
 				"answers": [
 					{
-						"value": "",
+						"value": "Import keystore",
+						"codeDependencies": [
+							{
+								"option": "key",
+								"value": "import"
+							}
+						],
+						"uiDependencies": [
+							{
+								"option": "rows",
+								"value": "1"
+							}
+						],
+						"defaultAnswer": true
+					},
+					{
+						"value": "Import certificate with bundled private key (one file)",
 						"codeDependencies": [
 							{
 								"option": "key",
 								"value": "key"
 							}
 						],
-						"defaultAnswer": true
+						"uiDependencies": [
+							{
+								"option": "rows",
+								"value": "1"
+							}
+						]
+					},
+					{
+						"value": "Import certificate with associated private key (two files)",
+						"codeDependencies": [
+							{
+								"option": "key",
+								"value": "both"
+							}
+						],
+						"uiDependencies": [
+							{
+								"option": "rows",
+								"value": "2"
+							},
+							{
+								"option": "label1",
+								"value": "Key"
+							},
+							{
+								"option": "label2",
+								"value": "Certificate"
+							}
+						]
+					},
+					{
+						"value": "Generate new keystore",
+						"codeDependencies": [
+							{
+								"option": "key",
+								"value": "new"
+							}
+						]
 					}
 				]
 			}
@@ -195,8 +245,11 @@
 				"answers": [
 					{
 						"value": "Modern Clients",
-						"codeDependencies": [
-						],
+				          "claferDependencies": [{
+				            "algorithm": "secComsecurity",
+				            "value": "4",
+				            "operator": "="
+				          }],
 						"defaultAnswer": true,
 						"nextID": "-1"
 					},
@@ -222,7 +275,7 @@
 	          "value": "Firefox 27",
 	          "defaultAnswer": true,
 	          "claferDependencies": [{
-	            "algorithm": "security",
+	            "algorithm": "secComsecurity",
 	            "value": "4",
 	            "operator": "="
 	          }],
@@ -232,7 +285,7 @@
 	          "value": "Chrome 30",
 	          "defaultAnswer": true,
 	          "claferDependencies": [{
-	            "algorithm": "security",
+	            "algorithm": "secComsecurity",
 	            "value": "4",
 	            "operator": "="
 	          }],
@@ -242,7 +295,7 @@
 	          "value": "Internet Explorer 11",
 	          "defaultAnswer": true,
 	          "claferDependencies": [{
-	            "algorithm": "security",
+	            "algorithm": "secComsecurity",
 	            "value": "4",
 	            "operator": "="
 	          }],
@@ -252,7 +305,7 @@
 	          "value": "Opera 17",
 	          "defaultAnswer": true,
 	          "claferDependencies": [{
-	            "algorithm": "security",
+	            "algorithm": "secComsecurity",
 	            "value": "4",
 	            "operator": "="
 	          }],
@@ -262,7 +315,7 @@
 	          "value": "Safari 9",
 	          "defaultAnswer": true,
 	          "claferDependencies": [{
-	            "algorithm": "security",
+	            "algorithm": "secComsecurity",
 	            "value": "4",
 	            "operator": "="
 	          }],
@@ -272,7 +325,7 @@
 	          "value": "Android 5",
 	          "defaultAnswer": true,
 	          "claferDependencies": [{
-	            "algorithm": "security",
+	            "algorithm": "secComsecurity",
 	            "value": "4",
 	            "operator": "="
 	          }],
@@ -282,7 +335,7 @@
 	          "value": "Java 8",
 	          "defaultAnswer": true,
 	          "claferDependencies": [{
-	            "algorithm": "security",
+	            "algorithm": "secComsecurity",
 	            "value": "4",
 	            "operator": "="
 	          }],
@@ -295,9 +348,13 @@
 	          "value" : "true"
 	        }],
 	          "claferDependencies": [{
-	            "algorithm": "security",
+	            "algorithm": "secComsecurity",
 	            "value": "2",
 	            "operator": "="
+	          },{
+	            "algorithm": "tlsProtocol",
+	            "value": "TLSv10;TLSv11;TLSv12",
+	            "operator": "++"
 	          }],
 	          "nextID": "-1"
 	        },
@@ -308,8 +365,13 @@
 	          "value" : "true"
 	        }],
 	          "claferDependencies": [{
-	            "algorithm": "security",
-	            "value": "2"
+	            "algorithm": "secComsecurity",
+	            "value": "2",
+	            "operator": "="
+	          },{
+	            "algorithm": "tlsProtocol",
+	            "value": "TLSv10;TLSv11;TLSv12",
+	            "operator": "++"
 	          }],
 	          "nextID": "-1"
 	        },
@@ -320,9 +382,13 @@
 	          "value" : "true"
 	        }],
 	          "claferDependencies": [{
-	            "algorithm": "security",
+	            "algorithm": "secComsecurity",
 	            "value": "2",
 	            "operator": "="
+	          },{
+	            "algorithm": "tlsProtocol",
+	            "value": "TLSv10;TLSv11;TLSv12",
+	            "operator": "++"
 	          }],
 	          "nextID": "-1"
 	        },
@@ -333,9 +399,13 @@
 	          "value" : "true"
 	        }],
 	          "claferDependencies": [{
-	            "algorithm": "security",
+	            "algorithm": "secComsecurity",
 	            "value": "2",
 	            "operator": "="
+	          },{
+	            "algorithm": "tlsProtocol",
+	            "value": "TLSv10;TLSv11;TLSv12",
+	            "operator": "++"
 	          }],
 	          "nextID": "-1"
 	        },
@@ -346,9 +416,13 @@
 	          "value" : "true"
 	        }],
 	          "claferDependencies": [{
-	            "algorithm": "security",
+	            "algorithm": "secComsecurity",
 	            "value": "2",
 	            "operator": "="
+	          },{
+	            "algorithm": "tlsProtocol",
+	            "value": "TLSv10;TLSv11;TLSv12",
+	            "operator": "++"
 	          }],
 	          "nextID": "-1"
 	        },
@@ -359,9 +433,13 @@
 	          "value" : "true"
 	        }],
 	          "claferDependencies": [{
-	            "algorithm": "security",
+	            "algorithm": "secComsecurity",
 	            "value": "2",
 	            "operator": "="
+	          },{
+	            "algorithm": "tlsProtocol",
+	            "value": "TLSv10;TLSv11;TLSv12",
+	            "operator": "++"
 	          }],
 	          "nextID": "-1"
 	        },
@@ -372,9 +450,13 @@
 	          "value" : "true"
 	        }],
 	          "claferDependencies": [{
-	            "algorithm": "security",
+	            "algorithm": "secComsecurity",
 	            "value": "2",
 	            "operator": "="
+	          },{
+	            "algorithm": "tlsProtocol",
+	            "value": "TLSv10;TLSv11;TLSv12",
+	            "operator": "++"
 	          }],
 	          "nextID": "-1"
 	        },
@@ -385,12 +467,12 @@
 	          "value" : "true"
 	        }],
 	          "claferDependencies": [{
-	            "algorithm": "security",
+	            "algorithm": "secComsecurity",
 	            "value": "2",
 	            "operator": "="
 	          },{
 	            "algorithm": "tlsProtocol",
-	            "value": "TLSv10,TLSv11, TLSv12",
+	            "value": "TLSv10;TLSv11;TLSv12",
 	            "operator": "++"
 	          } ],
 	          "nextID": "-1"       	      

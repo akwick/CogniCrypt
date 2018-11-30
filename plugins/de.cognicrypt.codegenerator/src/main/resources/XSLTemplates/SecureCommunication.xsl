@@ -172,7 +172,7 @@ public class Output {
 </xsl:when>
 <!-- Server code is finished. Remaining code is client: TLS Client or "simply" connect to an HTTPS connection -->
 <!-- TLS client implementation -->
-<xsl:when test="//task/code/https='false'">
+<xsl:when test="//task/code/HTTPS='false'">
 <xsl:result-document href="TLSClient.java">
 package <xsl:value-of select="//task/Package"/>; 
 <xsl:apply-templates select="//Import"/>
@@ -416,7 +416,6 @@ public class Output {
 </xsl:choose>
 
 </xsl:if>
-
 
 </xsl:template>
 
