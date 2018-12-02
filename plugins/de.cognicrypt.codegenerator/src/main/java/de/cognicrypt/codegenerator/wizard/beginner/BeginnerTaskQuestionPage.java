@@ -185,10 +185,11 @@ public class BeginnerTaskQuestionPage extends WizardPage {
 			if (answer == null || answer.getValue().isEmpty()) {
 				return false;
 			}
-			if (Arrays.asList((new GUIElements[] { GUIElements.button, GUIElements.radio, GUIElements.checkbox })).contains(question.getElement())) {
+			if (Arrays.asList((new GUIElements[] { GUIElements.rbtextgroup, GUIElements.button, GUIElements.radio, GUIElements.checkbox })).contains(question.getElement())) {
 				return this.finish;
 			}
 		}
+		
 		return true;
 	}
 
@@ -410,7 +411,7 @@ public class BeginnerTaskQuestionPage extends WizardPage {
 						Button browse = new Button(rbbtnControl, SWT.PUSH);
 						browse.setText(Constants.BROWSE);
 						browse.setEnabled(isDefaultAnswer);
-						browse.setLayoutData( new GridData(GridData.FILL, GridData.FILL, false, false ,1,1));
+						browse.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false ,1,1));
 						browse.addSelectionListener(new SelectionAdapter() {
 
 							public void widgetSelected(SelectionEvent e) {
@@ -423,6 +424,9 @@ public class BeginnerTaskQuestionPage extends WizardPage {
 								if (path != null) {
 									pathText.setText(path);
 									
+									if(rbgroups.get(radioButton).stream().filter(text -> text instanceof Text).allMatch(text -> !((Text) text).getText().isEmpty())) {
+										BeginnerTaskQuestionPage.this.setPageComplete(BeginnerTaskQuestionPage.this.finish = true);
+									}
 								}
 							}
 						});
@@ -443,6 +447,11 @@ public class BeginnerTaskQuestionPage extends WizardPage {
 								boolean isEnabled = curSelection == btn;
 								if(isEnabled) {
 									question.setEnteredAnswer(answer);
+									if(!rbgroups.get(radioButton).stream().filter(text -> text instanceof Text).allMatch(text -> !((Text) text).getText().isEmpty())) {
+										BeginnerTaskQuestionPage.this.setPageComplete(BeginnerTaskQuestionPage.this.finish = false);
+									} else {
+										BeginnerTaskQuestionPage.this.setPageComplete(BeginnerTaskQuestionPage.this.finish = true);
+									}
 								}
 								
 								rbgroups.get(curSelection).stream().forEach(control -> control.setEnabled(isEnabled));
@@ -450,9 +459,6 @@ public class BeginnerTaskQuestionPage extends WizardPage {
 						}
 					});
 				}
-				
-				question.setEnteredAnswer(question.getDefaultAnswer());
-				BeginnerTaskQuestionPage.this.setPageComplete(this.finish = true);
 				break;	
 				
 			case text:
